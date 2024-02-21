@@ -1,10 +1,10 @@
-# weather-forecast
-
-This template should help get you started developing with Vue 3 in Vite.
+# Weather Forecast App
 
 ## API source
 
 City search provide by [Mapbox](https://www.mapbox.com/geocoding)
+
+Weather forecast provide by [OpenWeather](https://openweathermap.org/api)
 
 ## Customize configuration
 
