@@ -1,21 +1,19 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import SearchBlock from '@/components/SearchBlock.vue'
-import SavedCityShortInfo from '@/components/SavedCityShortInfo.vue'
+import { computed, ref, watch } from "vue";
+import { useStore } from "vuex";
+import SearchBlock from "@/components/SearchBlock.vue";
+import SavedCityShortInfo from "@/components/SavedCityShortInfo.vue";
 
-const store = useStore()
-const savedCities = ref([])
+const store = useStore();
+const savedCities = ref([]);
 
 watch(
   store,
   () => {
-    savedCities.value = computed(() => store.getters.getCities)
+    savedCities.value = computed(() => store.getters.getCities);
   },
   { immediate: true }
-)
-
-console.log(savedCities.value)
+);
 </script>
 
 <template>
