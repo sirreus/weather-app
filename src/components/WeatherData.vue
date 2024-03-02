@@ -1,47 +1,54 @@
 <script setup>
-import axios from 'axios'
-import { useRoute } from 'vue-router'
+import axios from "axios";
+import { useRoute } from "vue-router";
 // import HourlyWeatherItem from './HourlyWeatherItem.vue'
 
-const route = useRoute()
+const route = useRoute();
 
 // GET WEATHER
-const API_URL = 'https://api.openweathermap.org/data/2.5/onecall'
-const API_KEY = '7efa332cf48aeb9d2d391a51027f1a71' //import.meta.env.VITE_OPEN_WEATHER_API_KEY
+const API_URL = "https://api.openweathermap.org/data/2.5/onecall";
+const API_KEY = "7efa332cf48aeb9d2d391a51027f1a71"; //import.meta.env.VITE_OPEN_WEATHER_API_KEY
 
 const getWeatherData = async () => {
   try {
     const weatherData = await axios.get(
       `${API_URL}?lat=${route.query.lat}&lon=${route.query.lng}&exclude=minutely&appid=${API_KEY}&units=metric`
-    )
+    );
 
     // cal current date & time
-    const localOffset = new Date().getTimezoneOffset() * 60000
-    const utc = weatherData.data.current.dt * 1000 + localOffset
-    weatherData.data.currentTime = utc + 1000 * weatherData.data.timezone_offset
+    const localOffset = new Date().getTimezoneOffset() * 60000;
+    const utc = weatherData.data.current.dt * 1000 + localOffset;
+    weatherData.data.currentTime =
+      utc + 1000 * weatherData.data.timezone_offset;
 
     // cal hourly weather offset
     weatherData.data.hourly.forEach((hour) => {
-      const utc = hour.dt * 1000 + localOffset
-      hour.currentTime = utc + 1000 * weatherData.data.timezone_offset
-    })
+      const utc = hour.dt * 1000 + localOffset;
+      hour.currentTime = utc + 1000 * weatherData.data.timezone_offset;
+    });
 
-    return weatherData.data
+    return weatherData.data;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-}
-const weatherData = await getWeatherData()
+};
+const weatherData = await getWeatherData();
 
-const currentDate = new Date(weatherData.currentTime).toLocaleDateString('en-us', {
-  weekday: 'short',
-  day: '2-digit',
-  month: 'long'
-})
+const currentDate = new Date(weatherData.currentTime).toLocaleDateString(
+  "en-us",
+  {
+    weekday: "short",
+    day: "2-digit",
+    month: "long",
+  }
+);
 
-const currentTime = new Date(weatherData.currentTime).toLocaleTimeString('en-us', {
-  timeStyle: 'short'
-})
+const currentTime = new Date(weatherData.currentTime).toLocaleTimeString(
+  "en-us",
+  {
+    timeStyle: "short",
+  }
+);
 </script>
 
 <template>
@@ -84,8 +91,8 @@ const currentTime = new Date(weatherData.currentTime).toLocaleTimeString('en-us'
           <!-- <HourlyWeatherItem :data="hourData" /> -->
           <p class="time">
             {{
-              new Date(hourData.currentTime).toLocaleTimeString('en-us', {
-                hour: 'numeric'
+              new Date(hourData.currentTime).toLocaleTimeString("en-us", {
+                hour: "numeric",
               })
             }}
           </p>
@@ -102,11 +109,15 @@ const currentTime = new Date(weatherData.currentTime).toLocaleTimeString('en-us'
     <hr class="block-breaker" />
 
     <div class="weekly-weather-list-wrapper">
-      <div v-for="day in weatherData.daily" :key="day.dt" class="weekly-weather-item">
+      <div
+        v-for="day in weatherData.daily"
+        :key="day.dt"
+        class="weekly-weather-item"
+      >
         <p class="day">
           {{
-            new Date(day.dt * 1000).toLocaleDateString('en-us', {
-              weekday: 'long'
+            new Date(day.dt * 1000).toLocaleDateString("en-us", {
+              weekday: "long",
             })
           }}
         </p>
@@ -126,6 +137,10 @@ const currentTime = new Date(weatherData.currentTime).toLocaleTimeString('en-us'
 <style lang="scss" scoped>
 .date-time {
   margin-left: 40px;
+
+  @media screen and (max-width: 430px) {
+    margin-left: 0;
+  }
 }
 .current-weather {
   display: flex;
@@ -152,10 +167,38 @@ const currentTime = new Date(weatherData.currentTime).toLocaleTimeString('en-us'
     flex-direction: row;
     align-items: flex-end;
     margin: 16px 0;
+
+    p {
+      font-size: 14px;
+    }
     .temp {
       font-size: 42px;
       font-weight: 600;
       line-height: initial;
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    .current-weather-icon-wrapper {
+      .current-weather-icon {
+        width: 64px;
+        height: 36px;
+        object-fit: cover;
+      }
+      .current-weather-icon-description {
+        font-size: 14px;
+      }
+    }
+
+    .current-wrapper-temp {
+      margin: 0 16px 0 0;
+      .temp {
+        font-size: 58px;
+      }
     }
   }
 }
@@ -191,6 +234,21 @@ const currentTime = new Date(weatherData.currentTime).toLocaleTimeString('en-us'
       flex-direction: column;
       align-items: center;
       height: fit-content;
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+    min-width: 288px;
+    width: calc(100vw - 32px);
+    .hourly-weather-list {
+      .hourly-weather {
+        img {
+          width: 72px;
+          height: 50px;
+          margin: 8px 0;
+          object-fit: cover;
+        }
+      }
     }
   }
 }

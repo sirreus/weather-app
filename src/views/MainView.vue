@@ -33,6 +33,9 @@ watch(
 </template>
 
 <style lang="scss" scoped>
+header > h1 {
+  margin-bottom: 32px;
+}
 hr#diver {
   margin: 32px 0 16px 0;
   border: 0.5px solid #ebebeba3;

@@ -1,41 +1,45 @@
 <script setup>
-import WeatherData from '@/components/WeatherData.vue'
-import { computed, ref, watch } from 'vue'
-import { uid } from 'uid'
-import { useRoute, RouterLink } from 'vue-router'
-import { useStore } from 'vuex'
+import WeatherData from "@/components/WeatherData.vue";
+import { computed, ref, watch } from "vue";
+import { uid } from "uid";
+import { useRoute, RouterLink } from "vue-router";
+import { useStore } from "vuex";
 
-const cityName = ref(null)
-const savedCities = ref([])
-const isSave = ref(false)
-const route = useRoute()
-const store = useStore()
+const cityName = ref(null);
+const savedCities = ref([]);
+const isSave = ref(false);
+const route = useRoute();
+const store = useStore();
 
-cityName.value = route.params.city
+cityName.value = route.params.city;
 const currentCity = {
   id: uid(),
   name: route.params.city,
   country: route.params.country,
   lat: route.query.lat,
-  lng: route.query.lng
-}
+  lng: route.query.lng,
+};
 const saveCity = () => {
-  store.dispatch('saveCity', currentCity)
-  isSave.value = true
-}
+  store.dispatch("saveCity", currentCity);
+  isSave.value = true;
+};
 
 watch(
   store,
   () => {
-    savedCities.value = computed(() => store.getters.getCities)
+    savedCities.value = computed(() => store.getters.getCities);
   },
   { immediate: true }
-)
+);
 
 const isCitySaved = () => {
-  return store.state.cities.findIndex((savedCity) => savedCity.id === route.query.id) !== -1
-}
-isSave.value = isCitySaved()
+  return (
+    store.state.cities.findIndex(
+      (savedCity) => savedCity.id === route.query.id
+    ) !== -1
+  );
+};
+isSave.value = isCitySaved();
 </script>
 
 <template>
@@ -77,6 +81,7 @@ main {
   position: relative;
 }
 header {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -101,6 +106,22 @@ header {
     &:hover {
       border-radius: 50%;
       box-shadow: 0 0 8px 2px #dbdbdba3;
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+    flex-direction: column;
+    align-items: flex-start;
+
+    h1 {
+      margin: 16px 0;
+      font-size: 24px;
+      word-wrap: break-word;
+    }
+    .save-city-btn {
+      position: absolute;
+      right: 0;
+      z-index: 2;
     }
   }
 }

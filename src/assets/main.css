@@ -1,4 +1,4 @@
-@import './base.css';
+@import "./base.css";
 
 #app {
   display: flex;
@@ -8,4 +8,10 @@
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
+}
+
+@media screen and (max-width: 430px) {
+  #app {
+    padding: 2rem 1rem;
+  }
 }
