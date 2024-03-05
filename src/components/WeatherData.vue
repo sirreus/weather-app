@@ -49,6 +49,9 @@ const currentTime = new Date(weatherData.currentTime).toLocaleTimeString(
     timeStyle: "short",
   }
 );
+
+const weeklyForecast = weatherData.daily;
+weeklyForecast.shift();
 </script>
 
 <template>
@@ -110,7 +113,7 @@ const currentTime = new Date(weatherData.currentTime).toLocaleTimeString(
 
     <div class="weekly-weather-list-wrapper">
       <div
-        v-for="day in weatherData.daily"
+        v-for="day in weeklyForecast"
         :key="day.dt"
         class="weekly-weather-item"
       >
